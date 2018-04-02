@@ -2,21 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/index.js?tmp=1"></script>
     </head>
     <body>
         <p>Bienvenu sur l'application de clavardage</p>
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script>
-            var socket = io();
-            
-            socket.on('connect', () =>{
-                console.log('connected to the server')
-            });
-
-            socket.on('disconnect', () =>{
-                console.log('Disconnected from server');
-            });
-        </script>
+       <input type="button" name="createMessage" id="createMessage" value="Nouveau message" onclick='createMessage({"from":"jen@example.com","text":"hello from Jen"})'>
     </body>
 </html>
