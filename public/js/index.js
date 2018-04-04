@@ -48,18 +48,34 @@ socket.on('disconnect', function() {
     });
     
     var locationButton = $('#send-location');
-
+    function test(position){
+        socket.emit('createLocationMessage', {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            });
+    }
+    function error(err){
+        console.log(err);
+        alert('Impossible de déterminé la géolocalisation! ')
+    }
+    options = {
+        enableHighAccuracy: false,
+        timeout: 3000,
+        maximumAge: 60000000
+      };
     locationButton.on('click', function(){
         if(!navigator.geolocation){
             return alert('Geolocalisation non supportée par votre fureteur');
         }
-        navigator.geolocation.getCurrentPosition(function(position){
-            socket.emit('createLocationMessage', {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude
-            });
-        }, function (){
-            alert('Impossible de déterminé la géolocalisation! :(')
-        });
+        //navigator.geolocation.watchPosition(test, error, options);
+
+        navigator.geolocation.getCurrentPosition(test
+            // function(position){
+            // socket.emit('createLocationMessage', {
+            //     latitude: position.coords.latitude,
+            //     longitude: position.coords.longitude
+            // });
+        //}
+        , error,options);
     });
 // });
