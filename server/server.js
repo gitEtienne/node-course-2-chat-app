@@ -15,13 +15,13 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
     console.log('New user connected');
 
-    socket.emit('newMessage',generateMessage('Admin', 'Bienvenu dans l\'application de clavardage'));
+    socket.emit('newMessage',generateMessage('Admin', 'Bienvenue dans l\'application de clavardage'));
     socket.broadcast.emit('newMessage',generateMessage('Admin', 'Un nouvel utilisateur vient de joindre la conversation'));
 
     socket.on('createMessage',(message, callback) => {
         console.log('createMessage', message);
         io.emit('newMessage',generateMessage(message.from, message.text));
-        callback('This is from the server.');
+        callback();
     });
 
     socket.on('createLocationMesage', (coords) =>{

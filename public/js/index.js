@@ -21,7 +21,7 @@ socket.on('disconnect', function() {
 });
 
 
-// $(document).ready(function(){
+ $(document).ready(function(){
 
     socket.on('newLocationMessage', function(message){
         var li = $('<li></li>');
@@ -35,15 +35,15 @@ socket.on('disconnect', function() {
 
     $('#message-form').on('submit', function(e){
         e.preventDefault();
-        var message = $('[name=message]').val();
-        if(message.length > 0){
+        var messageTextBox = $('[name=message]');
+        if(messageTextBox.val().length > 0){
             socket.emit('createMessage', {
                 from:'User',
-                text: message
+                text: messageTextBox.val()
             }, function(){
-        
+                messageTextBox.val('');
             });
-            $('[name=message]').val('');
+            
         }
     });
     
@@ -53,29 +53,43 @@ socket.on('disconnect', function() {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
+        
+        locationButton.removeAttr('disabled').text('Envoyer coordonnée');   
     }
     function error(err){
         console.log(err);
-        alert('Impossible de déterminé la géolocalisation! ')
+        alert('Impossible de déterminé la géolocalisation! ');
+        locationButton.removeAttr('disabled').text('Envoyer coordonnée');   
     }
     options = {
-        enableHighAccuracy: false,
-        timeout: 3000,
-        maximumAge: 60000000
-      };
+        enableHighAccuracy: 0,
+        timeout: 1e4,
+        maximumAge: 0
+    };
     locationButton.on('click', function(){
         if(!navigator.geolocation){
             return alert('Geolocalisation non supportée par votre fureteur');
         }
+        locationButton.attr('disabled', 'disabled').text('Géolocalisation en cours...');
         //navigator.geolocation.watchPosition(test, error, options);
-
-        navigator.geolocation.getCurrentPosition(test
-            // function(position){
-            // socket.emit('createLocationMessage', {
-            //     latitude: position.coords.latitude,
-            //     longitude: position.coords.longitude
-            // });
-        //}
-        , error,options);
+        console.log(navigator.permissions);
+        console.log(navigator.permissions.query({
+            name: "geolocation"
+        }).then(function (a){
+            console.log(a);
+            navigator.geolocation.getCurrentPosition(test
+                // function(position){
+                // socket.emit('createLocationMessage', {
+                //     latitude: position.coords.latitude,
+                //     longitude: position.coords.longitude
+                // });
+            //}
+            , error,options);
+            
+        },function (a){
+            console.log(a);
+            locationButton.removeAttr('disabled').text('Envoyer coordonnée');
+        }));
+        
     });
-// });
+ });
