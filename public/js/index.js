@@ -21,9 +21,19 @@ socket.on('disconnect', function() {
 });
 
 
-$(document).ready(function(){
+// $(document).ready(function(){
+
+    socket.on('newLocationMessage', function(message){
+        var li = $('<li></li>');
+        var a = $('<a target="_blank" >Ma position actuel</a>');
+
+        li.text(`${mesage.from}: `);
+        a.attr('href', message.url);
+        li.append(a);
+        $('#message').append(li);
+    });
+
     $('#message-form').on('submit', function(e){
-        console.log('hello world');
         e.preventDefault();
         var message = $('[name=message]').val();
         if(message.length > 0){
@@ -36,4 +46,20 @@ $(document).ready(function(){
             $('[name=message]').val('');
         }
     });
-});
+    
+    var locationButton = $('#send-location');
+
+    locationButton.on('click', function(){
+        if(!navigator.geolocation){
+            return alert('Geolocalisation non supportée par votre fureteur');
+        }
+        navigator.geolocation.getCurrentPosition(function(position){
+            socket.emit('createLocationMessage', {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            });
+        }, function (){
+            alert('Impossible de déterminé la géolocalisation! :(')
+        });
+    });
+// });
