@@ -3,11 +3,15 @@
     <head>
         <meta charset="utf-8">
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/index.js?tmp=1"></script>
+        <script src="/js/lib/jquery-3.3.1.min.js"></script>
+        <script src="/js/index.js?tmp=3"></script>
     </head>
     <body>
-        <p>Bienvenu sur l'application de clavardage</p>
-
-       <input type="button" name="createMessage" id="createMessage" value="Nouveau message" onclick='createMessage({"from":"jen@example.com","text":"hello from Jen"})'>
+        <form id="message-form" >
+            <p>Bienvenue sur l'application de clavardage, laid MAIS fonctionel</p>
+            <ol id="messages"></ol>
+            <input name="message" type="text" placeholder="Message"/>
+            <button>Envoyer</button>
+        </form>
     </body>
 </html>
