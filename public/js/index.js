@@ -10,8 +10,9 @@ socket.on('connect', function() {
 
 socket.on('newMessage', function(message) {
     console.log(message);
+    var formattedTime = moment(message.createAt).format('HH:mm');
     var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    li.text(`${message.from} ${formattedTime}: ${message.text}`);
     $('#messages').append(li);
 
 })
@@ -24,10 +25,12 @@ socket.on('disconnect', function() {
  $(document).ready(function(){
 
     socket.on('newLocationMessage', function(message){
+        var formattedTime = moment(message.createAt).format('HH:mm');
+
         var li = $('<li></li>');
         var a = $('<a target="_blank" >Ma position actuel</a>');
 
-        li.text(`${mesage.from}: `);
+        li.text(`${mesage.from} ${formattedTime}: `);
         a.attr('href', message.url);
         li.append(a);
         $('#message').append(li);
