@@ -121,7 +121,7 @@ locationButton.on('click', function(){
             //     longitude: position.coords.longitude
             // });
         //}
-        , error,options);
+        , error);
         
     },function (a){
         console.log(a);
