@@ -110,7 +110,7 @@ locationButton.on('click', function(){
     locationButton.attr('disabled', 'disabled').text('Géolocalisation en cours...');
     //navigator.geolocation.watchPosition(test, error, options);
     console.log(navigator.permissions);
-    console.log(navigator.permissions.query({
+    navigator.permissions.query({
         name: "geolocation"
     }).then(function (a){
         console.log(a);
@@ -126,7 +126,7 @@ locationButton.on('click', function(){
     },function (a){
         console.log(a);
         locationButton.removeAttr('disabled').text('Envoyer coordonnée');
-    }));
+    })
     
 });
 
